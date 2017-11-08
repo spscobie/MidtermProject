@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace MidtermProject
     {
         static void Main(string[] args)
         {
+<<<<<<< HEAD
 
             bool repeat = true;
             while (repeat)
@@ -28,6 +30,10 @@ namespace MidtermProject
                 Console.WriteLine(Validator.Mod10Check());
             }
 
+=======
+            Product 
+            //ArrayList products;
+>>>>>>> d0668f6b4198610885de0285ec39dac6a70d2c35
         }
     }
 }
