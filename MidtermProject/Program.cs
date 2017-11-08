@@ -10,28 +10,22 @@ namespace MidtermProject
     {
         static void Main(string[] args)
         {
-            //Here is a comment
-            //Here is another line
-            //Hello Stephen
 
-            //Kazaam! 123
-            //Steve Scobie
-            //gobbledigook
+            bool repeat = true;
+            while (repeat)
+            {
+                Console.WriteLine(Validator.GetValidSelection());
+                Console.WriteLine("Would you like to add this item to your shopping cart? (Y/N): ");
+                bool addCart = Validator.YesNo();
 
-            //hello Liam
-            //hello Steve
+                Console.WriteLine("Would you like to continue shopping? (N/A)");
+                bool shopAgain = Validator.YesNo();
 
-            //jordan
-            //is here
+                Console.WriteLine("Would you like to checkout? (Y/N)");
+                bool checkOut = Validator.YesNo();
 
-            //Liam
-            //I don't care
-
-            //gobbledigook?
-
-            //Liam loves christmas
-            //crazy changes!!
-            ///supersavr
+                Console.WriteLine(Validator.Mod10Check());
+            }
 
         }
     }
