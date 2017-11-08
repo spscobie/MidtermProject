@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,29 +11,8 @@ namespace MidtermProject
     {
         static void Main(string[] args)
         {
-            //Here is a comment
-            //Here is another line
-            //Hello Stephen
-
-            //Kazaam! 123
-            //Steve Scobie
-            //gobbledigook
-
-            //hello Liam
-            //hello Steve
-
-            //jordan
-            //is here
-
-            //Liam
-            //I don't care
-
-            //gobbledigook?
-
-            //Liam loves christmas
-            //crazy changes!!
-            ///supersavr
-
+            Product 
+            //ArrayList products;
         }
     }
 }
