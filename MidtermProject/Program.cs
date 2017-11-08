@@ -10,6 +10,9 @@ namespace MidtermProject
     {
         static void Main(string[] args)
         {
+            //Here is a comment
+            //Here is another line
+            //Hello Stephen
         }
     }
 }
