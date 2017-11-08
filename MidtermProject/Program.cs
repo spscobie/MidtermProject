@@ -17,8 +17,9 @@ namespace MidtermProject
                 Console.WriteLine(Validator.GetValidSelection());
                 Console.WriteLine("Would you like to add this item to your shopping cart? (Y/N): ");
                 bool addCart = Validator.YesNo();
+                Console.WriteLine($"You added {0} ${0}to your shopping cart");
 
-                Console.WriteLine("Would you like to continue shopping? (N/A)");
+                Console.WriteLine("Would you like to continue shopping? (Y/N)");
                 bool shopAgain = Validator.YesNo();
 
                 Console.WriteLine("Would you like to checkout? (Y/N)");
