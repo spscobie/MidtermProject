@@ -13,6 +13,8 @@ namespace MidtermProject
             //Here is a comment
             //Here is another line
             //Hello Stephen
+
+            //Kazaam! 123
         }
     }
 }
