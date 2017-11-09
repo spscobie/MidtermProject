@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,31 +10,127 @@ namespace MidtermProject
 {
     class ShoppingCart
     {
+        private const string INVENTORY = "Inventory.txt";
+        StreamReader fileIn;
+        StreamWriter fileOut;
+
+        private int qty;
+        public int Qty
+        {
+            get { return qty; }
+            set { qty = value; }
+        }
+
         private long? transId;
         public long? TransId
         {
             get { return transId; }
         }
 
-        public ShoppingCart ()
+        public ShoppingCart()
         {
             transId = null;
         }
 
-        public void AddToCart ()
+        public void AddToCart(int selection, ArrayList inv)
         {
-            Console.WriteLine("Inside ShoppingCart.AddFromCart()");
+            bool quantityCheck = true;
+            while (quantityCheck)
+            {
+                Product choice = (Product)inv[selection];
+                Console.Write($"Please pick how many you would like of the {choice.Name} {choice.Category} package: ");
+                int.TryParse(Console.ReadLine(), out int userQuantity);
+
+                int stock = choice.Quantity;
+
+                if (userQuantity <= stock)
+                {
+                    choice.Quantity = stock - userQuantity;
+                    break;
+                    //return choice.Quantity;
+                }
+
+                else
+                {
+                    Console.WriteLine($"Sorry, not enough in stock! We only have {choice.Quantity} left.");
+                }
+            }
         }
 
-        public void GenerateCust ()
+        public void GenerateCust()
         {
             Console.WriteLine("Inside ShoppingCart.GenerateCust()");
         }
 
-        public void QueryInventory ()
+        public static void ListInventory(ArrayList inv)
         {
-            StreamReader fileIn = new StreamReader("Inventory.txt");
-            Console.WriteLine("Inside ShoppingCart.QueryInventory()");
+            if (inv != null)
+            {
+                string name;
+                string category;
+                string description;
+                double price;
+                int qty;
+
+                Console.WriteLine(new string('+', 110)); //header
+                for (int item = 0; item < inv.Count; item++)
+                {
+                    string[] itemInfo = ((string)inv[item]).Split('\t');
+
+                    /************ Set attributes for display ****************/
+                    name = itemInfo[0].Trim();
+                    category = itemInfo[1].Trim();
+                    description = itemInfo[2].Trim();
+                    double.TryParse(itemInfo[3].Trim(), out price);
+                    int.TryParse(itemInfo[4], out qty);
+                    /********************************************************/
+
+                    Console.WriteLine($"| {item + 1,-4} | {name,-20} | {category,-15} | {description,-30} | {price,10:C} | {qty,7:n0} |");
+                }
+
+                Console.WriteLine(new string('+', 110)); //footer
+                Console.WriteLine();
+            }
+        }
+
+        public ArrayList LoadInventory()
+        {
+            fileIn = new StreamReader("Inventory.txt");
+
+            try
+            {
+                fileIn = new StreamReader(INVENTORY);
+            }
+            catch (SystemException e)
+            {
+                Console.WriteLine();
+                Console.WriteLine("ERROR READING FILE: Country DB does not exist.");
+                Console.WriteLine("Add a country (option #2) and the database will be created for you.");
+                Console.WriteLine($"DETAILS: {e.Message}");
+                return null;
+            }
+
+            ArrayList arrLst = new ArrayList();
+            if (fileIn.EndOfStream)
+            {
+                Console.WriteLine("End of file reached. No records exist in the database! See the manager.");
+                return null;
+            }
+            else
+            {
+                string input;
+                while (fileIn.EndOfStream == false)
+                {
+                    input = fileIn.ReadLine();
+                    if (input != "")
+                    {
+                        arrLst.Add(input.Trim());
+                    }
+                }
+
+                fileIn.Close();
+                return arrLst;
+            }
         }
 
         public void RemoveFromCart()
@@ -41,12 +138,12 @@ namespace MidtermProject
             Console.WriteLine("Inside ShoppingCart.RemoveFromCart()");
         }
 
-        public void ReturnItem ()
+        public void ReturnItem()
         {
             Console.WriteLine("Inside ShoppingCart.ReturnItem()");
         }
 
-        public void TrackCustomer ()
+        public void TrackCustomer()
         {
             Console.WriteLine("Inside ShoppingCart.TrackCustomer()");
         }

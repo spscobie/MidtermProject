@@ -14,235 +14,97 @@ namespace MidtermProject
 
         static void Main(string[] args)
         {
-            StreamReader inventory = new StreamReader(FILENAME);
+            ShoppingCart cart = new ShoppingCart();
             ArrayList menu = new ArrayList();
+            //ArrayList cart = new ArrayList();
+            StreamReader inventory = new StreamReader(FILENAME);
 
-<<<<<<< HEAD
             Console.WriteLine("                   Welcome to our delivery food service! ");
             DisplayInventory(inventory, menu);
-=======
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            /************* Scobie **************/
-
->>>>>>> a64318c9ec5cb9225be57b3982edf9a669b388f1
-
-            Console.Write("What would you like to pick? ");
-            string input = Console.ReadLine().ToLower().Trim();
-            //enter in validation for input to match for numbers
-            //enter in validation for categories
-
-            int.TryParse(input, out int choice);
-
-
-
-
-            Console.WriteLine();
-            Console.WriteLine(menu[choice]);
-            Console.WriteLine();
-
 
             bool repeat = true;
             while (repeat)
             {
+                Console.WriteLine("                  Here is what we have in stock right now! ");
+                Console.WriteLine("==========================================================================");
+                for (int i = 0; i < menu.Count; i++)
+                {
+                    Console.WriteLine($"{i}:{menu[i]}");
+                }
+                Console.WriteLine("==========================================================================");
 
-                Console.WriteLine(Validator.GetValidSelection());
-                Console.WriteLine("Would you like to add this item to your shopping cart? (Y/N): ");
+                int selection = Validator.GetValidSelection();//Make sure the number is on the list
+                Console.WriteLine();
+                Console.WriteLine(menu[selection]);
+                Console.WriteLine();
+                Product choice = (Product)menu[selection];
+
+                cart.AddToCart(selection, menu);
+
+
+
+                Console.Write("Would you like to add this item to your shopping cart? (Y/N): ");
                 bool addCart = Validator.YesNo();
-                Console.WriteLine($"You added {0} ${0}to your shopping cart");
 
-                Console.WriteLine("Would you like to continue shopping? (Y/N)");
+                if (addCart == true)
+                {
+                    Console.WriteLine("Added to cart!");
+                }
+                else
+                {
+                    Console.WriteLine("Not added to cart! ");
+                }
+
+
+                Console.Write("Would you like to continue shopping? (Y/N): ");
                 bool shopAgain = Validator.YesNo();
 
-                Console.WriteLine("Would you like to checkout? (Y/N)");
-                bool checkOut = Validator.YesNo();
-
-                Console.WriteLine(Validator.Mod10Check());
+                if (shopAgain == true)
+                {
+                    repeat = true;
+                }
+                else
+                {
+                    repeat = false;
+                }
             }
+
+            Console.WriteLine("Proceeding to checkout.... ");
+            Console.WriteLine("Here is your cart!");
+
+            Console.Write($"You're total is ${0.00}.\n");
+
+            Console.WriteLine("Here are our current payment methods:\n1.)Cash\n2.)Check\n3.)Credit");
+            Console.Write("Please enter how you would like to pay: ");
+
+            string payment = Console.ReadLine().ToLower();
+
+            if (payment == "1" || payment == "cash")
+            {
+                Console.Write($"You're total is {0}. \nPlease enter how much you are paying with: ");
+                double.TryParse(Console.ReadLine(), out double change);
+                Console.WriteLine($"Your change is {0}");
+            }
+            else if (payment == "2" || payment == "check")
+            {
+                Console.WriteLine(Validator.GetValidBankAccount());
+            }
+            else if (payment == "3" || payment == "credit")
+            {
+                bool ccCheck = Validator.Mod10Check();
+
+                
+                if(!ccCheck)
+                {
+                    Console.WriteLine();
+                }
+            }
+
+
+            //Console.WriteLine("Would you like to checkout? (Y/N)");
+            //bool checkOut = Validator.YesNo();
+
+            // Console.WriteLine(Validator.Mod10Check());
 
         }
 
@@ -255,7 +117,8 @@ namespace MidtermProject
                 if (string.IsNullOrEmpty(line))
                 {
                     break;
-                }
+                }                
+
 
                 string[] itemParts = line.Split('\t');
                 string name = itemParts[0];
@@ -270,13 +133,6 @@ namespace MidtermProject
 
             }
             inventory.Close();
-            Console.WriteLine("             Here is what we have in stock right now! ");
-            Console.WriteLine("==========================================================================");
-            for (int i = 0; i < menu.Count; i++)
-            {
-                Console.WriteLine($"{i}:{menu[i]}");
-            }
-            Console.WriteLine("==========================================================================");
         }
     }
 }
