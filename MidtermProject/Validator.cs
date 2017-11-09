@@ -12,7 +12,7 @@ namespace MidtermProject
         public static int GetValidSelection()
         {
 
-            Console.Write("Please enter a number: ");
+            Console.Write("Please pick what number you would like to order: ");
             bool success = int.TryParse(Console.ReadLine(), out int selection);
 
             if (!success)

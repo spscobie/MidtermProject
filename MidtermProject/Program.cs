@@ -31,13 +31,39 @@ namespace MidtermProject
                     Console.WriteLine($"{i}:{menu[i]}");
                 }
                 Console.WriteLine("==========================================================================");
-                //Console.Write("What would you like to pick? ");
-                int selection = Validator.GetValidSelection();
-                //enter in validation for input to match for numbers
-                //enter in validation for categories
+
+                int selection = Validator.GetValidSelection();//Make sure the number is on the list
                 Console.WriteLine();
                 Console.WriteLine(menu[selection]);
                 Console.WriteLine();
+                Product choice = (Product)menu[selection];
+
+                bool quantityCheck = true;
+                while (quantityCheck)
+                {
+                    Console.Write($"Please pick how many you would like of the {choice.Name} {choice.Category} package: ");
+                    int.TryParse(Console.ReadLine(), out int userQuantity);
+
+                    int stock = choice.Quantity;
+
+                    if (stock == 0)
+                    {
+                        Console.WriteLine("We are all out of this item I am sorry!" );
+                    }
+
+                    else if (userQuantity <= stock)
+                    {
+                        choice.Quantity = stock - userQuantity;
+                        break;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine($"Sorry, not enough in stock! We only have {choice.Quantity} left.");
+                    }
+
+                }
+                
 
                 Console.Write("Would you like to add this item to your shopping cart? (Y/N): ");
                 bool addCart = Validator.YesNo();
