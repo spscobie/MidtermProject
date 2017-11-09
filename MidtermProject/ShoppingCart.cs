@@ -14,6 +14,13 @@ namespace MidtermProject
         StreamReader fileIn;
         StreamWriter fileOut;
 
+        private int qty;
+        public int Qty
+        {
+            get { return qty; }
+            set { qty = value; }
+        }
+
         private long? transId;
         public long? TransId
         {
@@ -25,9 +32,29 @@ namespace MidtermProject
             transId = null;
         }
 
-        public void AddToCart ()
+        public void AddToCart (int selection, ArrayList inv)
         {
-            Console.WriteLine("Inside ShoppingCart.AddFromCart()");
+            bool quantityCheck = true;
+            while (quantityCheck)
+            {
+                Product choice = (Product)inv[selection];
+                Console.Write($"Please pick how many you would like of the {choice.Name} {choice.Category} package: ");
+                int.TryParse(Console.ReadLine(), out int userQuantity);
+
+                int stock = choice.Quantity;
+
+                if (userQuantity <= stock)
+                {
+                    choice.Quantity = stock - userQuantity;
+                    break;
+                    //return choice.Quantity;
+                }
+
+                else
+                {
+                    Console.WriteLine($"Sorry, not enough in stock! We only have {choice.Quantity} left.");
+                }
+            }
         }
 
         public void GenerateCust ()
