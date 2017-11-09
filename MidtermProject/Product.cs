@@ -55,7 +55,7 @@ namespace MidtermProject
 
         public override string ToString()
         {
-            return $"{name, -5}\t{category, - 3} {description,  20} {price, - 5:C} {quantity}"; 
+            return $"{name, - 15} {category, - 20 } {description, - 20} {price, -10:C} {quantity, - 10}"; 
         }
     }
 }

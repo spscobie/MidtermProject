@@ -1,26 +1,45 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace MidtermProject
 {
+
     class Program
     {
         const string FILENAME = "inventory.txt";
+
         static void Main(string[] args)
         {
-            StreamReader menuMaker = new StreamReader(FILENAME);
-            ArrayList inventory = new ArrayList();
-            ArrayList cart = new ArrayList();
+            StreamReader inventory = new StreamReader(FILENAME);
+            ArrayList menu = new ArrayList();
 
+            Console.WriteLine("                   Welcome to our delivery food service! ");
+            DisplayInventory(inventory, menu);
+
+            Console.Write("What would you like to pick? ");
+            string input = Console.ReadLine().ToLower().Trim();
+            //enter in validation for input to match for numbers
+            //enter in validation for categories
+
+            int.TryParse(input, out int choice);
+
+
+
+
+            Console.WriteLine();
+            Console.WriteLine(menu[choice]);
+            Console.WriteLine();
+
+        }
+
+        private static void DisplayInventory(StreamReader inventory, ArrayList menu)
+        {
             while (true)
             {
 
-                string line = menuMaker.ReadLine();
+                string line = inventory.ReadLine();
                 if (string.IsNullOrEmpty(line))
                 {
                     break;
@@ -33,17 +52,19 @@ namespace MidtermProject
                 double.TryParse(itemParts[3], out double price);
                 int.TryParse(itemParts[4], out int quantity);
 
-                Product inventoryItem = new Product(name, category, description, price, quantity);
-                quantity = inventoryItem.Quantity;
-                inventory.Add(inventoryItem);
+                Product menuItem = new Product(name, category, description, price, quantity);
+                quantity = menuItem.Quantity;
+                menu.Add(menuItem);
 
             }
-            menuMaker.Close();
-
-            foreach (Product i in inventory)
+            inventory.Close();
+            Console.WriteLine("             Here is what we have in stock right now! ");
+            Console.WriteLine("==========================================================================");
+            for (int i = 0; i < menu.Count; i++)
             {
-                Console.WriteLine(i);
+                Console.WriteLine($"{i}:{menu[i]}");
             }
+            Console.WriteLine("==========================================================================");
         }
     }
 }
