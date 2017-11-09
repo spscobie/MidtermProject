@@ -14,8 +14,9 @@ namespace MidtermProject
 
         static void Main(string[] args)
         {
+            ShoppingCart cart = new ShoppingCart();
             ArrayList menu = new ArrayList();
-            ArrayList cart = new ArrayList();
+            //ArrayList cart = new ArrayList();
             StreamReader inventory = new StreamReader(FILENAME);
 
             Console.WriteLine("                   Welcome to our delivery food service! ");
@@ -38,31 +39,8 @@ namespace MidtermProject
                 Console.WriteLine();
                 Product choice = (Product)menu[selection];
 
-                bool quantityCheck = true;
-                while (quantityCheck)
-                {
-                    Console.Write($"Please pick how many you would like of the {choice.Name} {choice.Category} package: ");
-                    int.TryParse(Console.ReadLine(), out int userQuantity);
+                cart.AddToCart(selection, menu);
 
-                    int stock = choice.Quantity;
-
-                    if (stock == 0)
-                    {
-                        Console.WriteLine("We are all out of this item I am sorry!" );
-                    }
-
-                    else if (userQuantity <= stock)
-                    {
-                        choice.Quantity = stock - userQuantity;
-                        break;
-                    }
-
-                    else
-                    {
-                        Console.WriteLine($"Sorry, not enough in stock! We only have {choice.Quantity} left.");
-                    }
-
-                }
                 
 
                 Console.Write("Would you like to add this item to your shopping cart? (Y/N): ");
@@ -71,7 +49,6 @@ namespace MidtermProject
                 if (addCart == true)
                 {
                     Console.WriteLine("Added to cart!");
-                    cart.Add(selection);
                 }
                 else
                 {
@@ -94,7 +71,6 @@ namespace MidtermProject
 
             Console.WriteLine("Proceeding to checkout.... ");
             Console.WriteLine("Here is your cart!");
-            Console.WriteLine(cart);
 
             Console.Write($"You're total is ${0.00}.\n");
 
