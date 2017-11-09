@@ -8,7 +8,7 @@ namespace MidtermProject
 {
     class Validator
     {
-<<<<<<< HEAD
+
         public static int GetValidSelection()
         {
             bool success = false;
@@ -78,7 +78,6 @@ namespace MidtermProject
             return sumOfDigits % 10 == 0;
         }
 
-=======
->>>>>>> d0668f6b4198610885de0285ec39dac6a70d2c35
+
     }
 }
