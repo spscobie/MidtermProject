@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,7 +55,7 @@ namespace MidtermProject
 
         public override string ToString()
         {
-            return $"{name} {category} {description} ${price} {quantity}"; 
+            return $"{name, - 15} {category, - 20 } {description, - 20} {price, -10:C} {quantity, - 10}"; 
         }
     }
 }
