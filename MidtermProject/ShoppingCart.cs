@@ -14,11 +14,20 @@ namespace MidtermProject
         StreamReader fileIn;
         StreamWriter fileOut;
 
-        private int qty;
-        public int Qty
+        private ArrayList userCart;
+
+        public ArrayList UserCart
         {
-            get { return qty; }
-            set { qty = value; }
+            get { return userCart; }
+            set { userCart = value; }
+        }
+
+        private ArrayList quantity;
+
+        public ArrayList Quantity
+        {
+            get { return quantity; }
+            set { quantity = value; }
         }
 
         private long? transId;
@@ -27,21 +36,60 @@ namespace MidtermProject
             get { return transId; }
         }
 
-        public ShoppingCart ()
+        //public ShoppingCart ()
+        //{
+            //transId = null;
+        //}
+
+        public ShoppingCart()
         {
-            transId = null;
+            ArrayList cart = new ArrayList();
+            ArrayList quantities = new ArrayList();
+            userCart = cart;
+            Quantity = quantities;
         }
 
-        public void AddToCart (int selection, ArrayList inv)
+        public static void AddtoCart(ShoppingCart cart, Product selection,int quantity)
+        {
+            cart.userCart.Add(selection);
+            cart.quantity.Add(quantity);
+        }
+
+        public static void GetCart(ShoppingCart cart)
+        {
+            Console.WriteLine("ItemName\t\tCategory\tPrice\tQuantity");
+            int qty = 0;
+            foreach (Product item in cart.UserCart)
+            {
+                Console.WriteLine("*======*======*======*======*======*======*======*======*");
+                Console.WriteLine($"{item.Name}\t\t{item.Category}\t{item.Price:C}\t{cart.Quantity[qty]}");
+                Console.WriteLine("*======*======*======*======*======*======*======*======*");
+            }
+        }
+
+        public double GetTotal()
+        {
+            double total = 0;
+            int selection = 0;
+            foreach (Product i in userCart)
+            {
+                double price = i.Price;
+                int qty = (int)quantity[selection];
+                selection++;
+                total += (price * qty);
+            }
+            return total;
+        }
+
+        public void GetQuantity (int selection, ArrayList menu)
         {
             bool quantityCheck = true;
             while (quantityCheck)
             {
-                Product choice = (Product)inv[selection];
+                Product choice = (Product)menu[selection];
                 Console.Write($"Please pick how many you would like of the {choice.Name} {choice.Category} package: ");
-                int.TryParse(Console.ReadLine(), out int userQuantity);
-
                 int stock = choice.Quantity;
+                int.TryParse(Console.ReadLine(), out int userQuantity);
 
                 if (userQuantity <= stock)
                 {
@@ -57,40 +105,44 @@ namespace MidtermProject
             }
         }
 
-        public void GenerateCust ()
+        public static ArrayList CurrentInventory(string filename)
         {
-            Console.WriteLine("Inside ShoppingCart.GenerateCust()");
-        }
-
-        public static void ListInventory(ArrayList inv)
-        {
-            if (inv != null)
+            StreamReader inventory = new StreamReader(filename);
+            ArrayList menu = new ArrayList();
+            bool repeat = true;
+            while (repeat)
             {
                 string name;
                 string category;
                 string description;
                 double price;
-                int qty;
+                int quantity;
 
-                Console.WriteLine(new string('+', 110)); //header
-                for (int item = 0; item < inv.Count; item++)
+                string line = inventory.ReadLine();
+                if (string.IsNullOrEmpty(line))
                 {
-                    string[] itemInfo = ((string)inv[item]).Split('\t');
-
-                    /************ Set attributes for display ****************/
-                    name = itemInfo[0].Trim();
-                    category = itemInfo[1].Trim();
-                    description = itemInfo[2].Trim();
-                    double.TryParse(itemInfo[3].Trim(), out price);
-                    int.TryParse(itemInfo[4], out qty);
-                    /********************************************************/
-
-                    Console.WriteLine($"| {item + 1, -4} | {name, -20} | {category, -15} | {description, -30} | {price, 10:C} | {qty, 7:n0} |");
+                    break;
                 }
 
-                Console.WriteLine(new string('+', 110)); //footer
-                Console.WriteLine();
+                string[] itemInfo = line.Split('\t');
+                /************ Set attributes for display ****************/
+                name = itemInfo[0];
+                category = itemInfo[1];
+                description = itemInfo[2];
+                double.TryParse(itemInfo[3], out price);
+                int.TryParse(itemInfo[4], out quantity);
+                /********************************************************/
+
+                Product menuItem = new Product(name, category, description, price, quantity);
+                quantity = menuItem.Quantity;
+                menu.Add(menuItem);
+
             }
+            inventory.Close();
+
+
+
+            return menu;
         }
 
         public ArrayList LoadInventory ()
@@ -131,6 +183,11 @@ namespace MidtermProject
                 fileIn.Close();
                 return arrLst;
             }
+        }
+
+        public void GenerateCust()
+        {
+            Console.WriteLine("Inside ShoppingCart.GenerateCust()");
         }
 
         public void RemoveFromCart()
