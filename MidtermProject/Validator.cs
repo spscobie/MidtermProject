@@ -24,6 +24,8 @@ namespace MidtermProject
                     Console.Write("That is not one of our products.\n ");
                     success = false;
                 }
+
+                
             }
             return selection;
         }
