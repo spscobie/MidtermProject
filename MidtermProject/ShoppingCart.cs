@@ -11,8 +11,11 @@ namespace MidtermProject
     class ShoppingCart
     {
         private const string INVENTORY = "Inventory.txt";
-        StreamReader fileIn;
-        StreamWriter fileOut;
+
+        private StreamReader fileIn;
+        private StreamWriter fileOut;
+        private static double total;
+
 
         private ArrayList userCart;
 
@@ -29,6 +32,23 @@ namespace MidtermProject
             get { return quantity; }
             set { quantity = value; }
         }
+
+        public double Total
+        {
+            get { return total; }
+            set { total = value; }
+        }
+
+        //private long? transId;
+        //public long? TransId
+        //{
+            //get { return transId; }
+        //}
+
+        //public ShoppingCart ()
+        //{
+            //transId = null;
+        //}
 
         public ShoppingCart()
         {
@@ -65,6 +85,7 @@ namespace MidtermProject
                 selection++;
                 total += (price * qty);
             }
+            Total = total;
             return total;
         }
 
@@ -100,24 +121,37 @@ namespace MidtermProject
 
         public static void Payment(double grandTotal)
         {
+            double tax = grandTotal - total;
+            Console.WriteLine($"Here is your total without tax: {total:C} ");
+            Console.WriteLine($"Your added tax at 6%: {tax:C}");
             Console.WriteLine($"Here is your grand total: {grandTotal:C}");
-            Console.WriteLine("Here are our current payment methods:\n1.)Cash\n2.)Check\n3.)Credit");
-            Console.Write("Please enter how you would like to pay: ");
-            string paymentOption = Console.ReadLine().ToLower();
+            Console.WriteLine();
 
-            if (paymentOption == "1" || paymentOption == "cash")
+            bool validPayment = false;
+            while (!validPayment)
             {
-                Validator.GetValidCash(grandTotal);//Method in validator class for getting the right amount of cash
-            }
-            else if (paymentOption == "2" || paymentOption == "check")
-            {
-                Validator.GetValidBankAccount();//Method in Validator class for getting a correct bank account.
-                Console.Write($"Your total charge is : {grandTotal:C}, which will reflect in your bank account within 1 business day.");
-            }
-            else if (paymentOption == "3" || paymentOption == "credit")
-            {
-                Validator.Mod10Check();//Method in validator class for getting the validated credit card
-                Console.Write($"You should see {grandTotal} charged to your Credit Card within 1 business day.");
+                Console.WriteLine();
+                Console.WriteLine("Here are our current payment methods:\n1.)Cash\n2.)Check\n3.)Credit");
+                Console.Write("Please enter how you would like to pay: ");
+
+                string paymentOption = Console.ReadLine().ToLower();
+                if (paymentOption == "1" || paymentOption == "cash")
+                {
+                    validPayment = Validator.GetValidCash(grandTotal);//Method in validator class for getting the right amount of cash
+                }
+                else if (paymentOption == "2" || paymentOption == "check")
+                {
+                    validPayment = Validator.GetValidBankAccount();//Method in Validator class for getting a correct bank account.
+                    Console.Write($"Your total charge is : {grandTotal:C}, which will reflect in your bank account within 1 business day.");
+                }
+                else if (paymentOption == "3" || paymentOption == "credit")
+                {
+                    validPayment = Validator.Mod10Check();//Method in validator class for getting the validated credit card
+                    if (validPayment)
+                    {
+                        Console.Write($"You should see {grandTotal:C} charged to your Credit Card within 1 business day.");
+                    }
+                }
             }
         }
 

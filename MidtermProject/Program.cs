@@ -17,8 +17,8 @@ namespace MidtermProject
             ShoppingCart cart = new ShoppingCart();
 
             ArrayList menu = GetInventory.CurrentInventory(FILENAME);
-            Console.WriteLine("                                 Welcome to JorStevIam Delivery Holladay Service! ");
-            Console.WriteLine("                                      Where we put the \'Holla\' in \'Holladay\' ");
+            Console.WriteLine("                                  Welcome JorStevIam.com Delivery Holladay Service! ");
+            Console.WriteLine("                                  JorStevIam, where we put the \'Holla\' in \'Holladay\' ");
             Console.WriteLine();
 
             bool repeat = true;
@@ -90,6 +90,8 @@ namespace MidtermProject
 
             if (option == "1" || option == "christmas")
             {
+                Console.BackgroundColor = ConsoleColor.DarkRed;
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("                                 You chose to search by Christmas! ");
                 Console.WriteLine(new string('+', 105)); //footer
                 for (int i = 0; i <= 3; i++)
@@ -98,8 +100,10 @@ namespace MidtermProject
                 }
                 Console.WriteLine(new string('+', 105)); //footer
             }
-            if (option == "2" || option == "valentines")
+            else if (option == "2" || option == "valentines")
             {
+                Console.BackgroundColor = ConsoleColor.DarkRed;
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("                                 You chose to search by Valentines! ");
                 Console.WriteLine(new string('+', 105)); //footer
                 for (int i = 4; i <= 7; i++)
@@ -108,33 +112,39 @@ namespace MidtermProject
                 }
                 Console.WriteLine(new string('+', 105)); //footer
             }
-            if (option == "3" || option == "thanksgiving")
+            else if (option == "3" || option == "thanksgiving")
             {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine("                                 You chose to search by Thanksgiving! ");
                 Console.WriteLine(new string('+', 105)); //footer
                 for (int i = 8; i <= 11; i++)
                 {
-                    Console.WriteLine($"{i + 1}:{menu[i]}");
+                    Console.WriteLine($"{i + 1, -3}:{menu[i]}");
                 }
                 Console.WriteLine(new string('+', 105)); //footer
             }
-            if (option == "4" || option == "fourthofjuly")
+            else if (option == "4" || option == "fourthofjuly")
             {
+                Console.BackgroundColor = ConsoleColor.Blue;
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("                                 You chose to search by FourthOfJuly! ");
                 Console.WriteLine(new string('+', 105)); //footer
                 for (int i = 12; i < 16; i++)
                 {
-                    Console.WriteLine($"{i + 1}:{menu[i]}");
+                    Console.WriteLine($"{i + 1, -3}:{menu[i]}");
                 }
                 Console.WriteLine(new string('+', 105)); //footer
             }
             else if (option == "5" || option == "everything")
             {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine("                                 You chose to search by everything! ");
                 Console.WriteLine(new string('+', 105)); //footer
                 for (int i = 0; i < menu.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}:{menu[i]}");
+                    Console.WriteLine($"{i + 1, -3}:{menu[i]}");
                 }
                 Console.WriteLine(new string('+', 105)); //footer
             }

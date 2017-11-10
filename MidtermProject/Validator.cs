@@ -38,31 +38,38 @@ namespace MidtermProject
         public static int GetQuantity(int selection, ArrayList menu)
         {
             int userQuantity = 0;
-            bool quantityCheck = true;
-            while (quantityCheck)
+            while (true)
             {
                 Product choice = (Product)menu[selection];
                 Console.Write($"Please pick how many you would like of the {choice.Name} {choice.Category} package: ");
-                int.TryParse(Console.ReadLine(), out userQuantity);
 
-                int stock = choice.Quantity;
-
-                if (userQuantity <= stock)
+                bool validQty = int.TryParse(Console.ReadLine(), out userQuantity);
+                if (!validQty || userQuantity < 1)
                 {
-                    choice.Quantity = stock - userQuantity;
-                    break;
-                    //return choice.Quantity;
+                    Console.WriteLine();
+                    Console.WriteLine("That was not a valid entry. Please try again.");
+                    Console.WriteLine();
                 }
-
+                else if (choice.Quantity == 0)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("I'm sorry, but we are all out of that product at the moment.");
+                    Console.WriteLine();
+                }
+                else if (userQuantity > choice.Quantity)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Sorry, not enough in stock! We only have {choice.Quantity} left.");
+                    Console.WriteLine();
+                }
                 else
                 {
-                    Console.WriteLine($"Sorry, not enough in stock! We only have {choice.Quantity} left.");
+                    choice.Quantity = choice.Quantity - userQuantity;
+                    return userQuantity;
                 }
-
-
             }
 
-            return userQuantity;
+            
         }
 
 
@@ -98,7 +105,7 @@ namespace MidtermProject
         {
 
 
-            Console.WriteLine("Enter your credit card number\n");
+            Console.WriteLine("Enter your credit card information:\n");
 
             Console.Write("Enter you credit card number: ");
 
@@ -117,7 +124,7 @@ namespace MidtermProject
 
             while (true)
             {
-                Console.WriteLine("Enter the 2 digit expiration MONTH of your credit card:  \n");
+                Console.Write("Enter the 2 digit expiration MONTH of your credit card:  \n");
                 string expMonth = Console.ReadLine().Trim();
                 int validMonth = 0;
                 bool success = false;
@@ -144,7 +151,7 @@ namespace MidtermProject
 
             while (true)
             {
-                Console.WriteLine("Now enter the 2 digit expiration YEAR of your credit card:  \n");
+                Console.Write("Now enter the 2 digit expiration YEAR of your credit card:  \n");
                 string expYear = Console.ReadLine().Trim();
                 int validYear = 0;
                 bool success2 = false;
@@ -175,7 +182,7 @@ namespace MidtermProject
             bool success3 = false;
             while (true)
             {
-                Console.WriteLine("Enter the 3 digit CVV code on the back of the card:");
+                Console.Write("Enter the 3 digit CVV code on the back of the card:");
                 string cvv = Console.ReadLine().Trim();
 
                 success3 = int.TryParse(cvv, out validCvv);
@@ -191,17 +198,26 @@ namespace MidtermProject
 
                 else
                 {
+                    const int ExclusiveUpperBound = 2;
+                    if (new Random().Next(ExclusiveUpperBound) == 0)
+                    {
+                        Console.WriteLine("You transaction was a success! Thank you for shopping with us");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Transaction declined. Have a nice day.");
+                        return false;
+                    }
                     break;
                 }
 
             }
-            return false;
+            return true;
 
 
         }
 
-        //return sumOfDigits % 10 == 0;
-        public static int GetValidBankAccount()
+        public static bool GetValidBankAccount()
         {
             bool success = false;
             int validBa = 0;
@@ -230,19 +246,38 @@ namespace MidtermProject
 
 
             }
-            return validBa;
+            return true;
         }
 
-        public static void GetValidCash(double grandTotal)
+        public static bool GetValidCash(double grandTotal)
         {
-            Console.WriteLine();
-            Console.WriteLine("This is an online store... How and why pay with cash...?\nWell, you are the customer and we want your money.");
-            Console.Write($"Please jam {grandTotal:C} through the computer: ");
-            string input = Console.ReadLine();
-            double.TryParse(input, out double payment);
-            double change = payment - grandTotal;
+            bool repeat = true;
+            while (repeat)
+            {
+                Console.WriteLine();
+                Console.Write($"Please jam {grandTotal:C} through the computer: ");
+                string input = Console.ReadLine();
+                bool success = double.TryParse(input, out double payment);
+                double change = payment - grandTotal;
 
-            Console.Write($"We won't give you a reciept beacuse this is an online store, but here is your change: {change:C}\n");
+                if (!success)
+                {
+                    Console.WriteLine("Are you really going to get complicated about this stuff? Just enter in the amount you want to pay with");
+                    repeat = true;
+                }
+                else if (payment < grandTotal)
+                {
+                    Console.WriteLine("You still owe us money.. Pay the full amount or over! ");
+                    repeat = true;
+                }
+                else
+                {
+                    Console.Write($"We won't give you a reciept beacuse this is an online store, but here is your change: {change:C}\n");
+                    repeat = false;
+                }
+            }
+
+            return true;
         }
     }
 }
