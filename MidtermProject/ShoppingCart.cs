@@ -11,89 +11,118 @@ namespace MidtermProject
     class ShoppingCart
     {
         private const string INVENTORY = "Inventory.txt";
-        private static StreamReader fileIn;
-        private static StreamWriter fileOut;
+        StreamReader fileIn;
+        StreamWriter fileOut;
 
-        private int qty;
-        public int Qty
+        private ArrayList userCart;
+
+        public ArrayList UserCart
         {
-            get { return qty; }
-            set { qty = value; }
+            get { return userCart; }
+            set { userCart = value; }
         }
 
-        private long? transId;
-        public long? TransId
+        private ArrayList quantity;
+
+        public ArrayList Quantity
         {
-            get { return transId; }
+            get { return quantity; }
+            set { quantity = value; }
         }
 
-        public ShoppingCart ()
+        public ShoppingCart()
         {
-            transId = null;
+            ArrayList cart = new ArrayList();
+            ArrayList quantities = new ArrayList();
+            userCart = cart;
+            Quantity = quantities;
         }
 
-        public void AddToCart (int selection, ArrayList inv)
+        public static void AddtoCart(ShoppingCart cart, Product selection, int quantity)
         {
-            bool quantityCheck = true;
-            while (quantityCheck)
+            cart.userCart.Add(selection);
+            cart.quantity.Add(quantity);
+        }
+
+        public static void GetCart(ShoppingCart cart)
+        {
+            int qty = 0;
+            foreach (Product item in cart.UserCart)
             {
-                Product choice = (Product)inv[selection];
-                Console.Write($"Please pick how many you would like of the {choice.Name} {choice.Category} package: ");
-                int.TryParse(Console.ReadLine(), out int userQuantity);
-
-                int stock = choice.Quantity;
-
-                if (userQuantity <= stock)
-                {
-                    choice.Quantity = stock - userQuantity;
-                    break;
-                    //return choice.Quantity;
-                }
-
-                else
-                {
-                    Console.WriteLine($"Sorry, not enough in stock! We only have {choice.Quantity} left.");
-                }
+                Console.WriteLine($"{item.Name}\t\t{item.Category}\t{item.Price:C}\t{cart.Quantity[qty]}");
+                qty++;
             }
         }
 
-        public void GenerateCust ()
+        public double GetTotal()
         {
-            Console.WriteLine("Inside ShoppingCart.GenerateCust()");
+            double total = 0;
+            int selection = 0;
+            foreach (Product i in userCart)
+            {
+                double price = i.Price;
+                int qty = (int)quantity[selection];
+                selection++;
+                total += (price * qty);
+            }
+            return total;
         }
 
-        public static void ListInventory(ArrayList inv)
+        private string FormatTotal(double x)
         {
-            if (inv != null)
+            return $"{x:C}";
+        }
+
+        public string GetFormattedTotal()
+        {
+            return FormatTotal(GetTotal());
+        }
+
+        public double GetSalesTax(double total)
+        {
+            double salestax = total * .06;
+            return salestax;
+        }
+
+        public static string GetFormattedSalesTax(double salestax)
+        {
+            return $"{salestax:C}";
+        }
+        public static double GetGrandTotal(double total)
+        {
+            double grandtotal = (total) * .06 + total;
+            return grandtotal;
+        }
+        public static string GetFormattedGrandTotal(double grandtotal)
+        {
+            return $"{grandtotal}";
+        }
+
+        public static void Payment(double grandTotal)
+        {
+            Console.WriteLine($"Here is your grand total: {grandTotal:C}");
+            Console.WriteLine("Here are our current payment methods:\n1.)Cash\n2.)Check\n3.)Credit");
+            Console.Write("Please enter how you would like to pay: ");
+            string paymentOption = Console.ReadLine().ToLower();
+
+            if (paymentOption == "1" || paymentOption == "cash")
             {
-                string name;
-                string category;
-                string description;
-                double price;
-                int qty;
-
-                Console.WriteLine(new string('+', 110)); //header
-                for (int item = 0; item < inv.Count; item++)
-                {
-                    string[] itemInfo = ((string)inv[item]).Split('\t');
-
-                    /************ Set attributes for display ****************/
-                    name = itemInfo[0].Trim();
-                    category = itemInfo[1].Trim();
-                    description = itemInfo[2].Trim();
-                    double.TryParse(itemInfo[3].Trim(), out price);
-                    int.TryParse(itemInfo[4], out qty);
-                    /********************************************************/
-
-                    Console.WriteLine($"| {item + 1, -4} | {name, -20} | {category, -15} | {description, -30} | {price, 10:C} | {qty, 7:n0} |");
-                }
-
-                Console.WriteLine(new string('+', 110)); //footer
-                Console.WriteLine();
+                Validator.GetValidCash(grandTotal);//Method in validator class for getting the right amount of cash
+            }
+            else if (paymentOption == "2" || paymentOption == "check")
+            {
+                Validator.GetValidBankAccount();//Method in Validator class for getting a correct bank account.
+                Console.Write($"Your total charge is : {grandTotal:C}, which will reflect in your bank account within 1 business day.");
+            }
+            else if (paymentOption == "3" || paymentOption == "credit")
+            {
+                Validator.Mod10Check();//Method in validator class for getting the validated credit card
+                Console.Write($"You should see {grandTotal} charged to your Credit Card within 1 business day.");
             }
         }
 
-        public static ArrayList LoadInventory ()
+
+        public ArrayList LoadInventory()
         {
             try
             {
@@ -131,21 +160,6 @@ namespace MidtermProject
             }
         }
 
-        private void RemoveFromCart()
-        {
-            Console.WriteLine("Inside ShoppingCart.RemoveFromCart()");
-        }
-
-        private void ReturnItem ()
-        {
-            Console.WriteLine("Inside ShoppingCart.ReturnItem()");
-        }
-
-        private void TrackCustomer ()
-        {
-            Console.WriteLine("Inside ShoppingCart.TrackCustomer()");
-        }
-
         public void UpdateInventory (ArrayList inv)
         {
             try
@@ -159,9 +173,10 @@ namespace MidtermProject
                 Console.WriteLine($"DETAILS: {e.Message}");
             }
 
-            foreach (string item in inv)
+            foreach (Product item in inv)
             {
-                fileOut.WriteLine(item);
+                string str = $"{item.Name}\t{item.Category}\t{item.Description}\t{item.Price}\t{item.Quantity}";
+                fileOut.WriteLine(str);
             }
 
             fileOut.Close();

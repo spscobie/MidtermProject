@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,13 +16,17 @@ namespace MidtermProject
             Console.Write("Please pick what number you would like to order: ");
             bool success = int.TryParse(Console.ReadLine(), out int selection);
 
+
+
+
             if (!success)
             {
-                Console.WriteLine("Please enter a valid number from the list!" );
+                Console.WriteLine("Please enter a valid number from the list!");
                 return GetValidSelection();
+
             }
-            
-            else if (selection > 12 || selection < 1)
+
+            else if (selection > 16 || selection < 1)
             {
                 Console.Write("That is not one of our products! ");
                 return GetValidSelection();
@@ -30,12 +35,43 @@ namespace MidtermProject
             return selection;
         }
 
+        public static int GetQuantity(int selection, ArrayList menu)
+        {
+            int userQuantity = 0;
+            bool quantityCheck = true;
+            while (quantityCheck)
+            {
+                Product choice = (Product)menu[selection];
+                Console.Write($"Please pick how many you would like of the {choice.Name} {choice.Category} package: ");
+                int.TryParse(Console.ReadLine(), out userQuantity);
+
+                int stock = choice.Quantity;
+
+                if (userQuantity <= stock)
+                {
+                    choice.Quantity = stock - userQuantity;
+                    break;
+                    //return choice.Quantity;
+                }
+
+                else
+                {
+                    Console.WriteLine($"Sorry, not enough in stock! We only have {choice.Quantity} left.");
+                }
+
+
+            }
+
+            return userQuantity;
+        }
+
+
 
         public static bool YesNo()
         {
             bool valid = true;
             bool repeat = true;
-                              
+
             while (valid)
             {
                 string answer = Console.ReadLine().ToLower();
@@ -61,24 +97,152 @@ namespace MidtermProject
         public static bool Mod10Check()
         {
 
+
+            Console.WriteLine("Enter your credit card number\n");
+
             Console.Write("Enter you credit card number: ");
+
             string ccNum = Console.ReadLine().Trim();
-            
-            if (string.IsNullOrEmpty(ccNum))
-            {
-                Console.WriteLine("The credit card you entered was not valid. Please try again: ");
-                return false;
-               
-            }
- 
+
             int sumOfDigits = ccNum.Where((e) => e >= '0' && e <= '9')
-                            .Reverse()
-                            .Select((e, i) => ((int)e - 48) * (i % 2 == 0 ? 1 : 2))
-                            .Sum((e) => e / 10 + e % 10);
-           
-            return sumOfDigits % 10 == 0;
+                               .Reverse()
+                               .Select((e, i) => ((int)e - 48) * (i % 2 == 0 ? 1 : 2))
+                               .Sum((e) => e / 10 + e % 10);
+            if (sumOfDigits % 10 != 0 || ccNum.Length != 16)
+            {
+                Console.WriteLine("That credit card is not valid. Please enter another credit card number: ");
+                return false;
+            }
+
+
+            while (true)
+            {
+                Console.WriteLine("Enter the 2 digit expiration MONTH of your credit card:  \n");
+                string expMonth = Console.ReadLine().Trim();
+                int validMonth = 0;
+                bool success = false;
+                success = !int.TryParse(expMonth, out validMonth);
+
+                if (string.IsNullOrEmpty(expMonth))
+                {
+                    Console.WriteLine("You did not enter a valid month. Please try again: \n");
+                }
+
+                else if (expMonth.Length != 2)
+                {
+                    Console.WriteLine("The expiration month is not valid. It should have 2 digits: ");
+                }
+                else if (validMonth < 01 || validMonth > 12)
+                {
+                    Console.WriteLine("That is not a valid month. Try again: ");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            while (true)
+            {
+                Console.WriteLine("Now enter the 2 digit expiration YEAR of your credit card:  \n");
+                string expYear = Console.ReadLine().Trim();
+                int validYear = 0;
+                bool success2 = false;
+                success2 = !int.TryParse(expYear, out validYear);
+                if (string.IsNullOrEmpty(expYear))
+                {
+                    Console.WriteLine("The expiration year is not valid. Please try again: \n");
+                }
+
+                else if (expYear.Length != 2)
+                {
+                    Console.WriteLine("The expiration year is not valid. It should have 2 digits: ");
+                }
+                else if (validYear < 17)
+                {
+                    Console.WriteLine("That is not a valid year. Try again: ");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+
+
+
+            int validCvv = 0;
+            bool success3 = false;
+            while (true)
+            {
+                Console.WriteLine("Enter the 3 digit CVV code on the back of the card:");
+                string cvv = Console.ReadLine().Trim();
+
+                success3 = int.TryParse(cvv, out validCvv);
+                if (string.IsNullOrEmpty(cvv))
+                {
+                    Console.WriteLine("The code you entered is not valid. Please try again: \n");
+                }
+
+                else if (cvv.Length != 3)
+                {
+                    Console.WriteLine("The code is not valid. It should have 3 digits: ");
+                }
+
+                else
+                {
+                    break;
+                }
+
+            }
+            return false;
+
+
         }
 
+        //return sumOfDigits % 10 == 0;
+        public static int GetValidBankAccount()
+        {
+            bool success = false;
+            int validBa = 0;
+            while (!success)
+            {
+                Console.Write("Enter your bank account number: ");
+                string bankInfo = Console.ReadLine().Trim();
+                bool success2 = int.TryParse(bankInfo, out validBa);
 
+                if (!success2)
+                {
+                    Console.WriteLine("The bank account you entered was not valid. Please try again: ");
+                    success = false;
+
+                }
+                else if (validBa <= 10000000 || validBa >= 999999999)
+                {
+                    Console.WriteLine("That is not a valid bank account.\n Your bank account has 8 or 9 digits. \n Try again");
+                    success2 = false;
+                }
+                else
+                {
+                    Console.WriteLine("Your bank account is accepted.");
+                    success = true;
+                }
+
+
+            }
+            return validBa;
+        }
+
+        public static void GetValidCash(double grandTotal)
+        {
+            Console.WriteLine();
+            Console.WriteLine("This is an online store... How and why pay with cash...?\nWell, you are the customer and we want your money.");
+            Console.Write($"Please jam {grandTotal:C} through the computer: ");
+            string input = Console.ReadLine();
+            double.TryParse(input, out double payment);
+            double change = payment - grandTotal;
+
+            Console.Write($"We won't give you a reciept beacuse this is an online store, but here is your change: {change:C}\n");
+        }
     }
 }
