@@ -12,7 +12,7 @@ namespace MidtermProject
     {
         private const string INVENTORY = "Inventory.txt";
         StreamReader fileIn;
-        StreamWriter fileOut;
+        //StreamWriter fileOut
 
         private ArrayList userCart;
 
@@ -30,11 +30,11 @@ namespace MidtermProject
             set { quantity = value; }
         }
 
-        private long? transId;
-        public long? TransId
-        {
-            get { return transId; }
-        }
+        //private long? transId;
+        //public long? TransId
+        //{
+            //get { return transId; }
+        //}
 
         //public ShoppingCart ()
         //{
@@ -49,7 +49,7 @@ namespace MidtermProject
             Quantity = quantities;
         }
 
-        public static void AddtoCart(ShoppingCart cart, Product selection,int quantity)
+        public static void AddtoCart(ShoppingCart cart, Product selection, int quantity)
         {
             cart.userCart.Add(selection);
             cart.quantity.Add(quantity);
@@ -57,13 +57,11 @@ namespace MidtermProject
 
         public static void GetCart(ShoppingCart cart)
         {
-            Console.WriteLine("ItemName\t\tCategory\tPrice\tQuantity");
             int qty = 0;
             foreach (Product item in cart.UserCart)
             {
-                Console.WriteLine("*======*======*======*======*======*======*======*======*");
                 Console.WriteLine($"{item.Name}\t\t{item.Category}\t{item.Price:C}\t{cart.Quantity[qty]}");
-                Console.WriteLine("*======*======*======*======*======*======*======*======*");
+                qty++;
             }
         }
 
@@ -76,86 +74,65 @@ namespace MidtermProject
                 double price = i.Price;
                 int qty = (int)quantity[selection];
                 selection++;
-                total += ((price * qty) *.06);
+                total += (price * qty);
             }
             return total;
         }
 
-        private string FormatNumber(double x)
+        private string FormatTotal(double x)
         {
-            return string.Format("{0:0.00}", x);
+            return $"{x:C}";
         }
 
         public string GetFormattedTotal()
         {
-            return FormatNumber(GetTotal());
+            return FormatTotal(GetTotal());
         }
 
-        public void GetQuantity (int selection, ArrayList menu)
+        public double GetSalesTax(double total)
         {
-            bool quantityCheck = true;
-            while (quantityCheck)
+            double salestax = total * .06;
+            return salestax;
+        }
+
+        public static string GetFormattedSalesTax(double salestax)
+        {
+            return $"{salestax:C}";
+        }
+        public static double GetGrandTotal(double total)
+        {
+            double grandtotal = (total) * .06 + total;
+            return grandtotal;
+        }
+        public static string GetFormattedGrandTotal(double grandtotal)
+        {
+            return $"{grandtotal}";
+        }
+
+        public static void Payment(double grandTotal)
+        {
+            Console.WriteLine($"Here is your grand total: {grandTotal:C}");
+            Console.WriteLine("Here are our current payment methods:\n1.)Cash\n2.)Check\n3.)Credit");
+            Console.Write("Please enter how you would like to pay: ");
+            string paymentOption = Console.ReadLine().ToLower();
+
+            if (paymentOption == "1" || paymentOption == "cash")
             {
-                Product choice = (Product)menu[selection];
-                Console.Write($"Please pick how many you would like of the {choice.Name} {choice.Category} package: ");
-                int stock = choice.Quantity;
-                int.TryParse(Console.ReadLine(), out int userQuantity);
-
-                if (userQuantity <= stock)
-                {
-                    choice.Quantity = stock - userQuantity;
-                    break;
-                    //return choice.Quantity;
-                }
-
-                else
-                {
-                    Console.WriteLine($"Sorry, not enough in stock! We only have {choice.Quantity} left.");
-                }
+                Validator.GetValidCash(grandTotal);//Method in validator class for getting the right amount of cash
+            }
+            else if (paymentOption == "2" || paymentOption == "check")
+            {
+                Validator.GetValidBankAccount();//Method in Validator class for getting a correct bank account.
+                Console.Write($"Your total charge is : {grandTotal:C}, which will reflect in your bank account within 1 business day.");
+            }
+            else if (paymentOption == "3" || paymentOption == "credit")
+            {
+                Validator.Mod10Check();//Method in validator class for getting the validated credit card
+                Console.Write($"You should see {grandTotal} charged to your Credit Card within 1 business day.");
             }
         }
 
-        public static ArrayList CurrentInventory(string filename)
-        {
-            StreamReader inventory = new StreamReader(filename);
-            ArrayList menu = new ArrayList();
-            bool repeat = true;
-            while (repeat)
-            {
-                string name;
-                string category;
-                string description;
-                double price;
-                int quantity;
-
-                string line = inventory.ReadLine();
-                if (string.IsNullOrEmpty(line))
-                {
-                    break;
-                }
-
-                string[] itemInfo = line.Split('\t');
-                /************ Set attributes for display ****************/
-                name = itemInfo[0];
-                category = itemInfo[1];
-                description = itemInfo[2];
-                double.TryParse(itemInfo[3], out price);
-                int.TryParse(itemInfo[4], out quantity);
-                /********************************************************/
-
-                Product menuItem = new Product(name, category, description, price, quantity);
-                quantity = menuItem.Quantity;
-                menu.Add(menuItem);
-
-            }
-            inventory.Close();
-
-
-
-            return menu;
-        }
-
-        public ArrayList LoadInventory ()
+        public ArrayList LoadInventory()
         {
             fileIn = new StreamReader("Inventory.txt");
 
@@ -205,12 +182,12 @@ namespace MidtermProject
             Console.WriteLine("Inside ShoppingCart.RemoveFromCart()");
         }
 
-        public void ReturnItem ()
+        public void ReturnItem()
         {
             Console.WriteLine("Inside ShoppingCart.ReturnItem()");
         }
 
-        public void TrackCustomer ()
+        public void TrackCustomer()
         {
             Console.WriteLine("Inside ShoppingCart.TrackCustomer()");
         }
