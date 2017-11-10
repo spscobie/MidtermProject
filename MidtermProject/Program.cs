@@ -71,7 +71,7 @@ namespace MidtermProject
             ShoppingCart.GetCart(cart);
 
             Console.WriteLine();
-            //ShoppingCart.GetTotal();
+            //ShoppingCart.GetFormattedTotal();
             Console.WriteLine();
 
             Console.WriteLine("Here are our current payment methods:\n1.)Cash\n2.)Check\n3.)Credit");

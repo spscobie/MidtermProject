@@ -76,9 +76,19 @@ namespace MidtermProject
                 double price = i.Price;
                 int qty = (int)quantity[selection];
                 selection++;
-                total += (price * qty);
+                total += ((price * qty) *.06);
             }
             return total;
+        }
+
+        private string FormatNumber(double x)
+        {
+            return string.Format("{0:0.00}", x);
+        }
+
+        public string GetFormattedTotal()
+        {
+            return FormatNumber(GetTotal());
         }
 
         public void GetQuantity (int selection, ArrayList menu)
