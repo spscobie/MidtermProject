@@ -11,22 +11,26 @@ namespace MidtermProject
 
         public static int GetValidSelection()
         {
-            bool success = false;
-            int selection = 0;
-            while (!success)
+
+            Console.Write("Please pick what number you would like to order: ");
+            bool success = int.TryParse(Console.ReadLine(), out int selection);
+
+
+
+
+            if (!success)
             {
-                Console.WriteLine("Please enter a number");
-                string input = Console.ReadLine();
-                success = int.TryParse(input, out selection);
-
-                if (selection > 12 || selection < 1)
-                {
-                    Console.Write("That is not one of our products.\n ");
-                    success = false;
-                }
-
+                Console.WriteLine("Please enter a valid number from the list!" );
+                return GetValidSelection();
 
             }
+            
+            else if (selection > 12 || selection < 1)
+            {
+                Console.Write("That is not one of our products! ");
+                return GetValidSelection();
+            }
+
             return selection;
         }
 
@@ -55,14 +59,17 @@ namespace MidtermProject
                     Console.Write("Did not enter a valid input. Please enter (Y/N): ");
                 }
             }
-
             return repeat;
         }
 
         public static bool Mod10Check()
         {
 
+
             Console.WriteLine("Enter your credit card number\n");
+
+            Console.Write("Enter you credit card number: ");
+
             string ccNum = Console.ReadLine().Trim();
 
             int sumOfDigits = ccNum.Where((e) => e >= '0' && e <= '9')

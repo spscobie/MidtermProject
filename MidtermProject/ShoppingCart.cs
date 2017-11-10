@@ -32,7 +32,11 @@ namespace MidtermProject
             transId = null;
         }
 
-        public void AddToCart(int selection, ArrayList inv)
+
+       
+
+        public void AddToCart (int selection, ArrayList inv)
+
         {
             bool quantityCheck = true;
             while (quantityCheck)
@@ -72,20 +76,24 @@ namespace MidtermProject
                 double price;
                 int qty;
 
-                Console.WriteLine(new string('+', 110)); //header
+                Console.WriteLine(new string('+', 110)); 
                 for (int item = 0; item < inv.Count; item++)
                 {
                     string[] itemInfo = ((string)inv[item]).Split('\t');
 
-                    /************ Set attributes for display ****************/
+                    
                     name = itemInfo[0].Trim();
                     category = itemInfo[1].Trim();
                     description = itemInfo[2].Trim();
                     double.TryParse(itemInfo[3].Trim(), out price);
                     int.TryParse(itemInfo[4], out qty);
-                    /********************************************************/
+                   
+
 
                     Console.WriteLine($"| {item + 1,-4} | {name,-20} | {category,-15} | {description,-30} | {price,10:C} | {qty,7:n0} |");
+
+                    Console.WriteLine($"| {item + 1, -4} | {name, -20} | {category, -15} | {description, -30} | {price, 10:C} | {qty, 7:n0} |");
+
                 }
 
                 Console.WriteLine(new string('+', 110)); //footer
@@ -93,7 +101,10 @@ namespace MidtermProject
             }
         }
 
-        public ArrayList LoadInventory()
+
+       
+        public ArrayList LoadInventory ()
+
         {
             fileIn = new StreamReader("Inventory.txt");
 

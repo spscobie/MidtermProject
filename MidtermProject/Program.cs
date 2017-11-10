@@ -71,6 +71,7 @@ namespace MidtermProject
 
             Console.WriteLine("Proceeding to checkout.... ");
             Console.WriteLine("Here is your cart!");
+<<<<<<< HEAD
 
             Console.Write($"You're total is ${0.00}.\n");
 
@@ -98,6 +99,30 @@ namespace MidtermProject
                 {
                     Console.WriteLine();
                 }
+=======
+
+            Console.Write($"You're total is ${0.00}.\n");
+
+            Console.WriteLine("Here are our current payment methods:\n1.)Cash\n2.)Check\n3.)Credit");
+            Console.Write("Please enter how you would like to pay: ");
+
+            string payment = Console.ReadLine().ToLower();
+
+            if (payment == "1" || payment == "cash")
+            {
+                Console.Write($"You're total is {0}. \nPlease enter how much you are paying with: ");
+                double.TryParse(Console.ReadLine(), out double change);
+                Console.WriteLine($"Your change is {0}");
+            }
+            else if (payment == "2" || payment == "check")
+            {
+                Console.Write("Please enter in your check number: ");
+                int.TryParse(Console.ReadLine(), out int check);
+            }
+            else if (payment == "3" || payment == "credit")
+            {
+                Console.WriteLine(Validator.Mod10Check());
+>>>>>>> e51d98c4c35ed2b282b739bf8f60ae05237725ef
             }
 
 
