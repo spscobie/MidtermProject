@@ -26,7 +26,7 @@ namespace MidtermProject
 
             }
 
-            else if (selection > 12 || selection < 1)
+            else if (selection > 16 || selection < 1)
             {
                 Console.Write("That is not one of our products! ");
                 return GetValidSelection();
