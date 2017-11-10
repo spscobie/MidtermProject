@@ -11,8 +11,9 @@ namespace MidtermProject
     class ShoppingCart
     {
         private const string INVENTORY = "Inventory.txt";
-        StreamReader fileIn;
-        //StreamWriter fileOut
+        private StreamReader fileIn;
+        private StreamWriter fileOut;
+        private static double total;
 
         private ArrayList userCart;
 
@@ -28,6 +29,12 @@ namespace MidtermProject
         {
             get { return quantity; }
             set { quantity = value; }
+        }
+
+        public double Total
+        {
+            get { return total; }
+            set { total = value; }
         }
 
         //private long? transId;
@@ -76,6 +83,7 @@ namespace MidtermProject
                 selection++;
                 total += (price * qty);
             }
+            Total = total;
             return total;
         }
 
@@ -111,6 +119,9 @@ namespace MidtermProject
 
         public static void Payment(double grandTotal)
         {
+            double tax = grandTotal - total;
+            Console.WriteLine($"Here is your total without tax: {total:C} ");
+            Console.WriteLine($"Your added tax at 6%: {tax:C}");
             Console.WriteLine($"Here is your grand total: {grandTotal:C}");
             Console.WriteLine("Here are our current payment methods:\n1.)Cash\n2.)Check\n3.)Credit");
             Console.Write("Please enter how you would like to pay: ");
@@ -195,6 +206,26 @@ namespace MidtermProject
         public void VoidTrans()
         {
             Console.WriteLine("Inside ShoppingCart.VoidTrans()");
+        }
+
+        public void UpdateInventory(ArrayList inv)
+        {
+            try
+            {
+                fileOut = new StreamWriter(INVENTORY, false);
+            }
+            catch (SystemException e)
+            {
+                Console.WriteLine();
+                Console.WriteLine("ERROR WRITING TO FILE: Please make sure the Inventory.txt exists or it has the proper permissions set. Check with systems administrator for help.");
+                Console.WriteLine($"DETAILS: {e.Message}");
+            }
+            foreach (Product item in inv)
+            {
+                string str = $"{item.Name}\t{item.Category}\t{item.Description}\t{item.Price}\t{item.Quantity}";
+                fileOut.WriteLine(str);
+            }
+            fileOut.Close();
         }
     }
 }

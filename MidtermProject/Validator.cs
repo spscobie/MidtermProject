@@ -191,6 +191,15 @@ namespace MidtermProject
 
                 else
                 {
+                    const int ExclusiveUpperBound = 2;
+                    if (new Random().Next(ExclusiveUpperBound) == 0)
+                    {
+                        Console.WriteLine("You transaction was a success! Thank you for shopping with us");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Transaction declined. Have a nice day.");
+                    }
                     break;
                 }
 
