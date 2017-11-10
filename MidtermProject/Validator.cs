@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,37 @@ namespace MidtermProject
 
             return selection;
         }
+
+        public static int GetQuantity(int selection, ArrayList menu)
+        {
+            int userQuantity = 0;
+            bool quantityCheck = true;
+            while (quantityCheck)
+            {
+                Product choice = (Product)menu[selection];
+                Console.Write($"Please pick how many you would like of the {choice.Name} {choice.Category} package: ");
+                int.TryParse(Console.ReadLine(), out userQuantity);
+
+                int stock = choice.Quantity;
+
+                if (userQuantity <= stock)
+                {
+                    choice.Quantity = stock - userQuantity;
+                    break;
+                    //return choice.Quantity;
+                }
+
+                else
+                {
+                    Console.WriteLine($"Sorry, not enough in stock! We only have {choice.Quantity} left.");
+                }
+
+
+            }
+
+            return userQuantity;
+        }
+
 
 
         public static bool YesNo()

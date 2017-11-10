@@ -15,40 +15,36 @@ namespace MidtermProject
         static void Main(string[] args)
         {
             ShoppingCart cart = new ShoppingCart();
-            ArrayList menu = new ArrayList();
-            //ArrayList cart = new ArrayList();
-            StreamReader inventory = new StreamReader(FILENAME);
-
+            ArrayList menu = ShoppingCart.CurrentInventory(FILENAME);
             Console.WriteLine("                   Welcome to our delivery food service! ");
-            DisplayInventory(inventory, menu);
 
             bool repeat = true;
             while (repeat)
             {
                 Console.WriteLine("                  Here is what we have in stock right now! ");
-                Console.WriteLine("==========================================================================");
+                Console.WriteLine(new string('+', 105)); //footer
                 for (int i = 0; i < menu.Count; i++)
                 {
                     Console.WriteLine($"{i}:{menu[i]}");
                 }
-                Console.WriteLine("==========================================================================");
+                Console.WriteLine(new string('+', 105)); //footer
 
                 int selection = Validator.GetValidSelection();//Make sure the number is on the list
                 Console.WriteLine();
                 Console.WriteLine(menu[selection]);
                 Console.WriteLine();
-                Product choice = (Product)menu[selection];
+                Product choice = (Product)menu[selection];//Allows to access the variables inside the textfile, which is held in the arraylist.
 
-                cart.AddToCart(selection, menu);
+                int userQuantity = Validator.GetQuantity(selection, menu);// Checks user quantity for in stock
 
 
-
-                Console.Write("Would you like to add this item to your shopping cart? (Y/N): ");
-                bool addCart = Validator.YesNo();
+                Console.Write($"Would you like to add {userQuantity} {choice.Name} {choice.Category} boxes to your cart? (Y/N): ");
+                bool addCart = Validator.YesNo();//Add to cart validator (Yes or No options)
 
                 if (addCart == true)
                 {
                     Console.WriteLine("Added to cart!");
+                    ShoppingCart.AddtoCart(cart, (Product)menu[selection], userQuantity);//Adds to the cart and adds the quantity
                 }
                 else
                 {
@@ -71,42 +67,17 @@ namespace MidtermProject
 
             Console.WriteLine("Proceeding to checkout.... ");
             Console.WriteLine("Here is your cart!");
-<<<<<<< HEAD
+            Console.WriteLine();
+            ShoppingCart.GetCart(cart);
 
-            Console.Write($"You're total is ${0.00}.\n");
-
-            Console.WriteLine("Here are our current payment methods:\n1.)Cash\n2.)Check\n3.)Credit");
-            Console.Write("Please enter how you would like to pay: ");
-
-            string payment = Console.ReadLine().ToLower();
-
-            if (payment == "1" || payment == "cash")
-            {
-                Console.Write($"You're total is {0}. \nPlease enter how much you are paying with: ");
-                double.TryParse(Console.ReadLine(), out double change);
-                Console.WriteLine($"Your change is {0}");
-            }
-            else if (payment == "2" || payment == "check")
-            {
-                Console.WriteLine(Validator.GetValidBankAccount());
-            }
-            else if (payment == "3" || payment == "credit")
-            {
-                bool ccCheck = Validator.Mod10Check();
-
-                
-                if(!ccCheck)
-                {
-                    Console.WriteLine();
-                }
-=======
-
-            Console.Write($"You're total is ${0.00}.\n");
+            Console.WriteLine();
+            //ShoppingCart.GetFormattedTotal();
+            Console.WriteLine();
 
             Console.WriteLine("Here are our current payment methods:\n1.)Cash\n2.)Check\n3.)Credit");
             Console.Write("Please enter how you would like to pay: ");
-
             string payment = Console.ReadLine().ToLower();
+
 
             if (payment == "1" || payment == "cash")
             {
@@ -122,42 +93,11 @@ namespace MidtermProject
             else if (payment == "3" || payment == "credit")
             {
                 Console.WriteLine(Validator.Mod10Check());
->>>>>>> e51d98c4c35ed2b282b739bf8f60ae05237725ef
             }
-
 
             //Console.WriteLine("Would you like to checkout? (Y/N)");
             //bool checkOut = Validator.YesNo();
-
             // Console.WriteLine(Validator.Mod10Check());
-
-        }
-
-        private static void DisplayInventory(StreamReader inventory, ArrayList menu)
-        {
-            while (true)
-            {
-
-                string line = inventory.ReadLine();
-                if (string.IsNullOrEmpty(line))
-                {
-                    break;
-                }                
-
-
-                string[] itemParts = line.Split('\t');
-                string name = itemParts[0];
-                string category = itemParts[1];
-                string description = itemParts[2];
-                double.TryParse(itemParts[3], out double price);
-                int.TryParse(itemParts[4], out int quantity);
-
-                Product menuItem = new Product(name, category, description, price, quantity);
-                quantity = menuItem.Quantity;
-                menu.Add(menuItem);
-
-            }
-            inventory.Close();
         }
     }
 }
