@@ -11,8 +11,8 @@ namespace MidtermProject
     class ShoppingCart
     {
         private const string INVENTORY = "Inventory.txt";
-        StreamReader fileIn;
-        StreamWriter fileOut;
+        private static StreamReader fileIn;
+        private static StreamWriter fileOut;
 
         private int qty;
         public int Qty
@@ -93,10 +93,8 @@ namespace MidtermProject
             }
         }
 
-        public ArrayList LoadInventory ()
+        public static ArrayList LoadInventory ()
         {
-            fileIn = new StreamReader("Inventory.txt");
-
             try
             {
                 fileIn = new StreamReader(INVENTORY);
@@ -133,19 +131,40 @@ namespace MidtermProject
             }
         }
 
-        public void RemoveFromCart()
+        private void RemoveFromCart()
         {
             Console.WriteLine("Inside ShoppingCart.RemoveFromCart()");
         }
 
-        public void ReturnItem ()
+        private void ReturnItem ()
         {
             Console.WriteLine("Inside ShoppingCart.ReturnItem()");
         }
 
-        public void TrackCustomer ()
+        private void TrackCustomer ()
         {
             Console.WriteLine("Inside ShoppingCart.TrackCustomer()");
+        }
+
+        public void UpdateInventory (ArrayList inv)
+        {
+            try
+            {
+                fileOut = new StreamWriter(INVENTORY, false);
+            }
+            catch (SystemException e)
+            {
+                Console.WriteLine();
+                Console.WriteLine("ERROR WRITING TO FILE: Please make sure the Inventory.txt exists or it has the proper permissions set. Check with systems administrator for help.");
+                Console.WriteLine($"DETAILS: {e.Message}");
+            }
+
+            foreach (string item in inv)
+            {
+                fileOut.WriteLine(item);
+            }
+
+            fileOut.Close();
         }
 
         public void VoidTrans()

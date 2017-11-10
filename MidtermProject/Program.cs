@@ -20,7 +20,9 @@ namespace MidtermProject
             StreamReader inventory = new StreamReader(FILENAME);
 
             Console.WriteLine("                   Welcome to our delivery food service! ");
-            DisplayInventory(inventory, menu);
+            menu = ShoppingCart.LoadInventory();
+            ShoppingCart.ListInventory(menu);
+            //DisplayInventory(inventory, menu);
 
             bool repeat = true;
             while (repeat)
@@ -37,7 +39,8 @@ namespace MidtermProject
                 Console.WriteLine();
                 Console.WriteLine(menu[selection]);
                 Console.WriteLine();
-                Product choice = (Product)menu[selection];
+                //Product choice = (Product)menu[selection];
+
 
                 cart.AddToCart(selection, menu);
 
