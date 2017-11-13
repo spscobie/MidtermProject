@@ -16,7 +16,6 @@ namespace MidtermProject
         private StreamWriter fileOut;
         private static double total;
 
-
         private ArrayList userCart;
 
         public ArrayList UserCart
@@ -38,17 +37,6 @@ namespace MidtermProject
             get { return total; }
             set { total = value; }
         }
-
-        //private long? transId;
-        //public long? TransId
-        //{
-            //get { return transId; }
-        //}
-
-        //public ShoppingCart ()
-        //{
-            //transId = null;
-        //}
 
         public ShoppingCart()
         {
@@ -74,7 +62,7 @@ namespace MidtermProject
             }
         }
 
-        public double GetTotal()
+        public double GetTotal() //Gets the total for the shopping cart. Multiplies the quantity by the item, for everyitem. 
         {
             double total = 0;
             int selection = 0;
@@ -89,7 +77,7 @@ namespace MidtermProject
             return total;
         }
 
-        private string FormatTotal(double x)
+        private string FormatTotal(double x)//Formats the total into a current currency
         {
             return $"{x:C}";
         }
@@ -105,7 +93,7 @@ namespace MidtermProject
             return salestax;
         }
 
-        public static string GetFormattedSalesTax(double salestax)
+        public static string GetFormattedSalesTax(double salestax)//Formats the salestax into a current currency
         {
             return $"{salestax:C}";
         }
@@ -114,12 +102,12 @@ namespace MidtermProject
             double grandtotal = (total) * .06 + total;
             return grandtotal;
         }
-        public static string GetFormattedGrandTotal(double grandtotal)
+        public static string GetFormattedGrandTotal(double grandtotal)//Formats the grandTotal into a current currency
         {
-            return $"{grandtotal}";
+            return $"{grandtotal:C}";
         }
 
-        public static void Payment(double grandTotal)
+        public static void Payment(double grandTotal) //Payment options. Lists the total, grand total, and the tax.
         {
             double tax = grandTotal - total;
             Console.WriteLine($"Here is your total without tax: {total:C} ");
@@ -154,7 +142,6 @@ namespace MidtermProject
                 }
             }
         }
-
 
         public ArrayList LoadInventory()
         {
@@ -194,7 +181,7 @@ namespace MidtermProject
             }
         }
 
-        public void UpdateInventory (ArrayList inv)
+        public void UpdateInventory(ArrayList inv)
         {
             try
             {
@@ -214,11 +201,6 @@ namespace MidtermProject
             }
 
             fileOut.Close();
-        }
-
-        public void VoidTrans()
-        {
-            Console.WriteLine("Inside ShoppingCart.VoidTrans()");
         }
     }
 }

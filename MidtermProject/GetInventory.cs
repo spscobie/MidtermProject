@@ -10,7 +10,7 @@ namespace MidtermProject
 {
     class GetInventory
     {
-        public static ArrayList CurrentInventory(string filename)
+        public static ArrayList CurrentInventory(string filename) //Gets the inventory.txt 
         {
             StreamReader inventory = new StreamReader(filename);
             ArrayList menu = new ArrayList();
@@ -44,11 +44,16 @@ namespace MidtermProject
 
             }
             inventory.Close();
-
-
-
             return menu;
         }
 
+        public static void AddInventory(string filename, ArrayList menu)
+        {
+            string input = Console.ReadLine();
+            using (StreamWriter inventoryAdd = File.AppendText(filename))
+            {
+                inventoryAdd.WriteLine(input);
+            }
+        }
     }
 }

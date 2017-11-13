@@ -1,10 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace MidtermProject
 {
@@ -13,14 +12,19 @@ namespace MidtermProject
         private const string CUSTFILE = "Customers.txt";
         private StreamWriter fileOut;
 
-        private string fisrtName;
+        private string firstName;
+
+
         public string FirstName
         {
-            get { return fisrtName; }
-            set { fisrtName = value; }
+            get { return firstName; }
+            set { firstName = value; }
         }
 
+
         private string lastName;
+
+
         public string LastName
         {
             get { return lastName; }
@@ -28,6 +32,8 @@ namespace MidtermProject
         }
 
         private string address;
+
+
         public string Address
         {
             get { return address; }
@@ -35,6 +41,8 @@ namespace MidtermProject
         }
 
         private string city;
+
+
         public string City
         {
             get { return city; }
@@ -42,6 +50,8 @@ namespace MidtermProject
         }
 
         private string state;
+
+
         public string State
         {
             get { return state; }
@@ -49,6 +59,8 @@ namespace MidtermProject
         }
 
         private string zip;
+
+
         public string Zip
         {
             get { return zip; }
@@ -56,13 +68,14 @@ namespace MidtermProject
         }
 
         private string email;
+
         public string Email
         {
             get { return email; }
             set { email = value; }
         }
 
-        public Customer ()
+        public Customer()
         {
             FirstName = "";
             LastName = "";
@@ -71,9 +84,33 @@ namespace MidtermProject
             State = "";
             Zip = "";
             Email = "";
+
         }
 
-        private void UpdateCustDb (Customer cust)
+        public void GetCustomer()
+        {
+            Customer cust = new Customer();
+
+            Console.Write("First Name: ");
+            cust.FirstName = Console.ReadLine();
+            Console.Write("Last Name: ");
+            cust.LastName = Console.ReadLine();
+            Console.Write("Address: ");
+            cust.Address = Console.ReadLine();
+            Console.Write("City: ");
+            cust.City = Console.ReadLine();
+            Console.Write("State: ");
+            cust.State = Console.ReadLine();
+            Console.Write("Zip Code: ");
+            cust.Zip = Console.ReadLine();
+            Console.Write("Email Address: ");
+            cust.Email = Console.ReadLine();
+
+            UpdateCustDb(cust);
+
+        }
+
+        private void UpdateCustDb(Customer cust)
         {
             try
             {
@@ -85,12 +122,9 @@ namespace MidtermProject
                 Console.WriteLine("ERROR WRITING TO FILE: Please make sure the Customers.txt exists or it has the proper permissions set. Check with systems administrator for help.");
                 Console.WriteLine($"DETAILS: {e.Message}");
             }
-
             string str = $"\r\n{cust.FirstName}|{cust.LastName}|{cust.Address}|{cust.City}|{cust.State}|{cust.Zip}|{cust.Email}";
-            fileOut.WriteLine(str);
-
+            fileOut.Write(str);
             fileOut.Close();
         }
-    }
     }
 }
