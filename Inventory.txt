@@ -1,12 +1,16 @@
-Vegetarian	Christmas	Vegan..	70	0
-Ham/Turkey	Christmas	Exactly as it says	110	6920
-GingerBread	Chirstmas	Delish Dessert	59.7	42
-Vegetarian	Valentines	Vegan..	70	30
-WineMeatCheese	Valentines	Classic Dinner	89.9	14
-Beauty/Beast	Valentines	Luxury Dinner	130.98	18
-Vegetarian	Thanksgiving	Vegan..	70	30
-StuffedTurkey	Thanksgiving	Gobble Gobble	128.43	80
-Turducken	Thanksgiving	Quabble	128.43	40
-Vegetarian	FourthOfJuly	Vegan..	70	30
-Grill Out	FourthOfJuly	Classic Grill	140	65
-XTREME GRILL	FourthOfJuly	XTREME GRILL	185.89	18
+Vegetarian	Christmas	Vegan Snowballs	70	500
+Ham/Turkey	Christmas	Exactly as it says	110	7000
+GingerBread	Christmas	Delish Dessert	59.7	4196
+Eggnog Delight	Christmas	Package of Eggnog	79.99	5600
+Vegetarian	Valentines	Vegan Hearts	70	700
+WineMeatCheese	Valentines	Classic Dinner	89.9	3600
+Beauty/Beast	Valentines	Luxury Dinner	130.98	1100
+SweetyFruit	Valentines	Chocolate Covered Fruits	140.99	3000
+Vegetarian	Thanksgiving	Vegan Feathers	70	1700
+StuffedTurkey	Thanksgiving	Gobble Gobble	128.43	6780
+Turducken	Thanksgiving	Quacky Gobbles	140.78	4500
+Pie Overload	Thanksgiving	Pecan, Pumpkin, Apple	165.39	1390
+Vegetarian	Fourth Of July	Vegan Fireworks	70	240
+Grill Out	Fourth Of July	Classic Grill	140	5600
+XTREME GRILL	Fourth Of July	XTREMEGRILL	185.89	3200
+Flag Cake	Fourth Of July	Flag Lookin' Cake	98.98	350
